@@ -12,7 +12,7 @@
 
 :root {
   --theme-color: #ff8585;
-  --theme-bg-color: #ffe7e7;
+  --theme-bg-color: #fff;
   --alt-color: #c28080;
   --alt-bg-color: #f4f0f0;
   --dark-color: #282c34;
@@ -22,7 +22,7 @@
   --white-color: #ffffff;
   --red-color: #ff0000;
 
-  font-family: "MapoGoldenPier";
+  font-family: "MaruBuri";
   font-size: 20px;
   @media (max-width: 500px) {
     font-size: 4vw;
@@ -74,7 +74,7 @@ $colors: (
 }
 
 button {
-  font-family: "MapoGoldenPier";
+  font-family: "MaruBuri";
   font-size: 1rem;
   border: none;
   background-color: transparent;

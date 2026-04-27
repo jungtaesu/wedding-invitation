@@ -166,7 +166,6 @@ export const Information = () => {
     <LazyDiv className="card information">
       <Information1 />
       <Information2 />
-      <AttendanceInfo />
     </LazyDiv>
   )
 }
