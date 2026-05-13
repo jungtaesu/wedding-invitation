@@ -36,6 +36,38 @@ const NaverMap = () => {
     }
   }
 
+  const openNaverMap = () => {
+    const webUrl = `https://map.naver.com/p/entry/place/${NMAP_PLACE_ID}`
+
+    switch (checkDevice()) {
+      case "ios":
+      case "android": {
+        const appUrl = `nmap://place?id=${NMAP_PLACE_ID}`
+        const fallbackTimer = window.setTimeout(() => {
+          if (document.visibilityState === "visible") {
+            window.location.href = webUrl
+          }
+        }, 1200)
+
+        document.addEventListener(
+          "visibilitychange",
+          () => {
+            if (document.visibilityState === "hidden") {
+              clearTimeout(fallbackTimer)
+            }
+          },
+          { once: true },
+        )
+
+        window.location.href = appUrl
+        break
+      }
+      default:
+        window.open(webUrl, "_blank")
+        break
+    }
+  }
+
   useEffect(() => {
     if (naver) {
       const map = new naver.maps.Map(ref.current, {
@@ -102,22 +134,7 @@ const NaverMap = () => {
         <div className="map-inner" ref={ref}></div>
       </div>
       <div className="navigation">
-        <button
-          onClick={() => {
-            switch (checkDevice()) {
-              case "ios":
-              case "android":
-                window.open(`nmap://place?id=${NMAP_PLACE_ID}`, "_self")
-                break
-              default:
-                window.open(
-                  `https://map.naver.com/p/entry/place/${NMAP_PLACE_ID}`,
-                  "_blank",
-                )
-                break
-            }
-          }}
-        >
+        <button onClick={openNaverMap}>
           <img src={nmapIcon} alt="naver-map-icon" />
           네이버 지도
         </button>

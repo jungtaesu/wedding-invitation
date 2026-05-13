@@ -25,7 +25,7 @@ try {
 }
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     react(),
     svgr(),
@@ -51,5 +51,6 @@ export default defineConfig({
   ],
   server: { port: 3000 },
   build: { outDir: distFolder },
-  base,
-})
+  // Keep root path in dev to match API console URL allowlists.
+  base: command === "serve" ? "/" : base,
+}))
