@@ -6,7 +6,10 @@ import { KAKAO_SDK_JS_KEY, NAVER_MAP_CLIENT_ID } from "../../env"
 
 const baseUrl = import.meta.env.BASE_URL
 
-const NAVER_MAP_URL = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_CLIENT_ID}`
+const NAVER_MAP_URLS = [
+  `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_CLIENT_ID}`,
+  `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${NAVER_MAP_CLIENT_ID}`,
+]
 const KAKAO_SDK_URL = `${baseUrl}/kakao_js_sdk/2.7.1/kakao.min.js`
 
 export const useNaver = () => {
@@ -16,13 +19,30 @@ export const useNaver = () => {
       return
     }
 
-    if (!document.querySelector(`script[src="${NAVER_MAP_URL}"]`)) {
-      const script = document.createElement("script")
-      script.src = NAVER_MAP_URL
-      document.head.appendChild(script)
-      script.addEventListener("load", () => {
-        setNaver((window as any).naver)
-      })
+    const hasLoadedScript = NAVER_MAP_URLS.some((src) =>
+      document.querySelector(`script[src="${src}"]`),
+    )
+
+    if (!hasLoadedScript) {
+      const loadScript = (index: number) => {
+        const src = NAVER_MAP_URLS[index]
+        if (!src) {
+          return
+        }
+
+        const script = document.createElement("script")
+        script.src = src
+        script.addEventListener("load", () => {
+          setNaver((window as any).naver)
+        })
+        script.addEventListener("error", () => {
+          script.remove()
+          loadScript(index + 1)
+        })
+        document.head.appendChild(script)
+      }
+
+      loadScript(0)
     }
   }, [setNaver])
 
