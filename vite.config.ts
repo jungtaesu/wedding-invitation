@@ -2,7 +2,6 @@ import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 import svgr from "vite-plugin-svgr"
 import fs from "fs"
-import path from "path"
 
 import pkg from "./package.json"
 import { createHtmlPlugin } from "vite-plugin-html"
@@ -25,21 +24,6 @@ try {
   base = pkg.homepage || "/"
 }
 
-const previewImagePath = path.resolve("public", "preview_image.png")
-const previewImageVersion = fs.existsSync(previewImagePath)
-  ? Math.floor(fs.statSync(previewImagePath).mtimeMs).toString()
-  : Date.now().toString()
-
-const homepage = typeof pkg.homepage === "string" ? pkg.homepage.trim() : ""
-const normalizedHomepage = homepage
-  ? `${homepage.replace(/\/+$/, "")}/`
-  : ""
-
-const ogUrl = normalizedHomepage || `%BASE_URL%/`
-const ogImageUrl = normalizedHomepage
-  ? `${normalizedHomepage}preview_image.png?v=${previewImageVersion}`
-  : `%BASE_URL%/preview_image.png?v=${previewImageVersion}`
-
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
   plugins: [
@@ -51,8 +35,6 @@ export default defineConfig(({ command }) => ({
           GROOM_FULLNAME,
           BRIDE_FULLNAME,
           DESCRIPTION: `${WEDDING_DATE.format(WEDDING_DATE_FORMAT)} ${LOCATION}`,
-          OG_URL: ogUrl,
-          OG_IMAGE_URL: ogImageUrl,
         },
       },
     }),
