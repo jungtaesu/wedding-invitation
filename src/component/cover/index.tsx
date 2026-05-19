@@ -32,7 +32,7 @@ export const Cover = () => {
         {DAY_OF_WEEK[WEDDING_DATE.day()]}
       </div>
       <div className="image-wrapper">
-        <img src={COVER_IMAGE} alt="sample" />
+        <img src={COVER_IMAGE} alt="sample" loading="lazy" />
       </div>
       <div className="subtitle">Save the date for the wedding of</div>
       <div className="names">

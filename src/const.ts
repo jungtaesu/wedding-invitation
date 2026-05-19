@@ -30,12 +30,12 @@ export const WEDDING_HALL_POSITION = [126.95105712519438, 37.44877984794454]
 // 네이버 지도의 웨딩홀 장소 ID
 // 네이버 지도 웹페이지에서 웨딩홀 검색 후 URL에서 확인 가능.
 // 예: https://map.naver.com/p/entry/place/13321741 -> 13321741
-export const NMAP_PLACE_ID = 18720631
+export const NMAP_PLACE_ID = 1807172929
 
 // 카카오 지도의 웨딩홀 장소 ID
 // 카카오 지도 웹페이지에서 웨딩홀 검색 후 해당 장소에서 상세보기 클릭 시 URL에서 확인 가능.
 // 예: https://place.map.kakao.com/8634826 -> 8634826
-export const KMAP_PLACE_ID = 8634826
+export const KMAP_PLACE_ID = 1408612060
 
 export const BRIDE_FULLNAME = "김소연"
 export const BRIDE_FIRSTNAME = "소연"
@@ -47,19 +47,19 @@ export const BRIDE_INFO = [
     relation: "신부",
     name: BRIDE_FULLNAME,
     phone: "010-0000-0000",
-    account: "우리은행 0000000000000",
+    account: "농협 302-1170-6086-71",
   },
   {
     relation: "신부 아버지",
     name: BRIDE_FATHER,
     phone: "010-0000-0000",
-    account: "하나은행 00000000000",
+    account: "농협 010-4742-168909",
   },
   {
     relation: "신부 어머니",
     name: BRIDE_MOTHER,
     phone: "010-0000-0000",
-    account: "하나은행 00000000000000",
+    account: "카카오뱅크 3333-14-1981418",
   },
 ]
 
@@ -73,18 +73,18 @@ export const GROOM_INFO = [
     relation: "신랑",
     name: GROOM_FULLNAME,
     phone: "010-0000-0000",
-    account: "하나은행 00000000000000",
+    account: "국민 40400204285999",
   },
   {
     relation: "신랑 아버지",
     name: GROOM_FATHER,
     phone: "010-0000-0000",
-    account: "신한은행 000000000000",
+    account: "새마을금고 3556100069411",
   },
   {
     relation: "신랑 어머니",
     name: GROOM_MOTHER,
     phone: "010-0000-0000",
-    account: "국민은행 000000000000",
+    account: "농협 144-12-265498",
   },
 ]
