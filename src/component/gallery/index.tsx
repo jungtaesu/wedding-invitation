@@ -372,6 +372,8 @@ export const Gallery = () => {
                       src={image}
                       alt={`${idx}`}
                       draggable={false}
+                      loading="lazy"
+                      decoding="async"
                       onClick={() => {
                         if (statusRef.current === "stationary") {
                           if (idx !== slideRef.current) {
