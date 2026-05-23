@@ -19,22 +19,27 @@ import EnvelopeIcon from "../../icons/envelope-icon.svg?react"
 
 export const Invitation = () => {
   const { openModal, closeModal } = useModal()
+  const acrosticLines = [
+    { syllable: "태", text: "어나 서로 다른 길을 걷던 두 사람이" },
+    { syllable: "수", text: "많은 계절 끝에 만나" },
+    { syllable: "소", text: "박하지만 진심어린 마음으로" },
+    { syllable: "연", text: "을 맺는 자리에 여러분을 초대합니다" },
+  ]
+
   return (
     <LazyDiv className="card invitation">
       <h2 className="english">Invitation</h2>
 
       <div className="break" />
 
-      <div className="content">싱그러운 여름 향기 가득한 날</div>
-      <div className="content">소중한 분들을 모시고</div>
-      <div className="content">사랑의 약속을 하려고 합니다.</div>
-      <div className="break" />
-      <div className="content">햇살이 뜨거울 땐 가려주고,</div>
-      <div className="content">비가 오면 우산이 되어주는</div>
-      <div className="content">부부가 되겠습니다.</div>
-      <div className="break" />
-      <div className="content">기쁜날 함께 하시어</div>
-      <div className="content">저희의 앞날을 축복해 주세요.</div>
+      <div className="acrostic">
+        {acrosticLines.map(({ syllable, text }) => (
+          <div className="acrostic-line" key={syllable}>
+            <span className="acrostic-syllable">{syllable}</span>
+            <span className="acrostic-text">{text}</span>
+          </div>
+        ))}
+      </div>
 
       <div className="break" />
 

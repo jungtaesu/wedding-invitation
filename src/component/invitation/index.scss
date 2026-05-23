@@ -1,8 +1,41 @@
 .invitation {
-  .content {
-    margin-top: 0.8rem;
-    margin-bottom: 0.8rem;
-    font-size: 0.9rem;
+  .acrostic {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    align-items: flex-start;
+
+    .acrostic-line {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.65rem;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #fff;
+      width: 100%;
+    }
+
+    .acrostic-syllable {
+      width: 2.1rem;
+      height: 2.1rem;
+      border-radius: 999px;
+      background-color: #eaeaea;
+      font-weight: 700;
+      color: #636363;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .acrostic-text {
+      text-align: left;
+      color: #666;
+    }
   }
 
   .name {

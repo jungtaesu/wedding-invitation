@@ -5,6 +5,33 @@ import { LazyDiv } from "../lazyDiv"
 import { useModal } from "../modal"
 import { AttendanceInfo } from "./attendance"
 
+type AccountInfo = {
+  relation: string
+  name: string
+  account?: string
+}
+
+const relationPriority = (relation: string) => {
+  if (relation.includes("아버지")) {
+    return 0
+  }
+  if (relation.includes("어머니")) {
+    return 1
+  }
+  return 2
+}
+
+const getSortedAccountInfos = (infos: AccountInfo[]) => {
+  return infos
+    .filter(({ account }) => !!account)
+    .sort((a, b) => relationPriority(a.relation) - relationPriority(b.relation))
+}
+
+const toAccountNumberOnly = (account: string) => {
+  // Keep only digits so pasted value works directly in bank app inputs.
+  return account.replace(/\D/g, "")
+}
+
 export const Information1 = () => {
   return (
     <>
@@ -12,9 +39,7 @@ export const Information1 = () => {
       <div className="info-card">
         <div className="label">식사 안내</div>
         <div className="content">
-          식사시간: 12시 30분 ~ 14시 30분
-          <br />
-          장소: 지하 1층 연회장
+          식사시간: 10시 30분 ~ 13시 00분
         </div>
       </div>
     </>
@@ -47,7 +72,7 @@ export const Information2 = () => {
               header: <div className="title">신랑측 계좌번호</div>,
               content: (
                 <>
-                  {GROOM_INFO.filter(({ account }) => !!account).map(
+                  {getSortedAccountInfos(GROOM_INFO).map(
                     ({ relation, name, account }) => (
                       <div className="account-info" key={relation}>
                         <div>
@@ -60,9 +85,13 @@ export const Information2 = () => {
                           className="copy-button"
                           onClick={async () => {
                             if (account) {
+                              const accountNumberOnly =
+                                toAccountNumberOnly(account)
                               try {
-                                navigator.clipboard.writeText(account)
-                                alert(account + "\n복사되었습니다.")
+                                await navigator.clipboard.writeText(
+                                  accountNumberOnly,
+                                )
+                                alert(accountNumberOnly + "\n복사되었습니다.")
                               } catch {
                                 alert("복사에 실패했습니다.")
                               }
@@ -100,7 +129,7 @@ export const Information2 = () => {
               header: <div className="title">신부측 계좌번호</div>,
               content: (
                 <>
-                  {BRIDE_INFO.filter(({ account }) => !!account).map(
+                  {getSortedAccountInfos(BRIDE_INFO).map(
                     ({ relation, name, account }) => (
                       <div className="account-info" key={relation}>
                         <div>
@@ -113,9 +142,13 @@ export const Information2 = () => {
                           className="copy-button"
                           onClick={async () => {
                             if (account) {
+                              const accountNumberOnly =
+                                toAccountNumberOnly(account)
                               try {
-                                navigator.clipboard.writeText(account)
-                                alert(account + "\n복사되었습니다.")
+                                await navigator.clipboard.writeText(
+                                  accountNumberOnly,
+                                )
+                                alert(accountNumberOnly + "\n복사되었습니다.")
                               } catch {
                                 alert("복사에 실패했습니다.")
                               }

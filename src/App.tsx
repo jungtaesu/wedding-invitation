@@ -41,7 +41,7 @@ function App() {
           <Information />
         </LazyDiv>
 
-        <ShareButton />
+        {/* <ShareButton /> */}
       </div>
     </div>
   )
