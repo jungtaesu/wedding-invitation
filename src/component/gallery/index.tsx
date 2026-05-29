@@ -4,12 +4,9 @@ import { LazyDiv } from "../lazyDiv"
 import { Button } from "../button"
 import { useModal } from "../modal"
 import { GALLERY_IMAGES } from "../../images"
+import { Lightbox } from "../lightbox"
 
-const CAROUSEL_ITEMS = GALLERY_IMAGES.map((item, idx) => (
-  <div className="carousel-item" key={idx}>
-    <img src={item} draggable={false} alt={`${idx}`} />
-  </div>
-))
+const CAROUSEL_LENGTH = GALLERY_IMAGES.length
 
 const DRAG_SENSITIVITY = 15
 
@@ -33,6 +30,34 @@ type ClickMove = "left" | "right" | null
 export const Gallery = () => {
   const { openModal, closeModal } = useModal()
   const carouselRef = useRef<HTMLDivElement>({} as HTMLDivElement)
+
+  const openLightbox = useCallback(
+    (idx: number) => {
+      openModal({
+        className: "gallery-lightbox-modal",
+        closeOnClickBackground: true,
+        content: (
+          <Lightbox
+            images={GALLERY_IMAGES}
+            defaultIndex={idx}
+            onRequestClose={closeModal}
+            showThumbnails
+          />
+        ),
+      })
+    },
+    [closeModal, openModal],
+  )
+
+  const carouselItems = useMemo(
+    () =>
+      GALLERY_IMAGES.map((item, idx) => (
+        <div className="carousel-item" key={idx}>
+          <img src={item} draggable={false} alt={`${idx}`} />
+        </div>
+      )),
+    [],
+  )
 
   useEffect(() => {
     // preload images
@@ -141,7 +166,7 @@ export const Gallery = () => {
           currentTranslateX: -carouselWidth,
         })
         setStatus("stationary")
-        setSlide((slide + move + CAROUSEL_ITEMS.length) % CAROUSEL_ITEMS.length)
+        setSlide((slide + move + CAROUSEL_LENGTH) % CAROUSEL_LENGTH)
       }, 300)
     },
     [],
@@ -216,18 +241,19 @@ export const Gallery = () => {
 
     if (status === "clicked") {
       if (clickMove === "left") {
-        move(slide, (slide + CAROUSEL_ITEMS.length - 1) % CAROUSEL_ITEMS.length)
+        move(slide, (slide + CAROUSEL_LENGTH - 1) % CAROUSEL_LENGTH)
       } else if (clickMove === "right") {
-        move(slide, (slide + 1) % CAROUSEL_ITEMS.length)
+        move(slide, (slide + 1) % CAROUSEL_LENGTH)
       } else {
         setStatus("stationary")
+        openLightbox(slide)
       }
     } else if (status === "dragging") {
       dragEnd(slide, dragOptionRef.current, carouselRef.current.clientWidth)
     } else if (status === "clickCanceled") {
       setStatus("stationary")
     }
-  }, [dragEnd, move])
+  }, [dragEnd, move, openLightbox])
 
   useEffect(() => {
     const carouselElement = carouselRef.current
@@ -303,19 +329,19 @@ export const Gallery = () => {
           <div className={transformClass} style={transformStyle}>
             {["dragging", "dragEnding"].includes(status) && [
               ...(slide === 0
-                ? [CAROUSEL_ITEMS[CAROUSEL_ITEMS.length - 1]]
+                ? [carouselItems[CAROUSEL_LENGTH - 1]]
                 : []),
-              ...CAROUSEL_ITEMS.slice(slide === 0 ? 0 : slide - 1, slide + 2),
-              ...(slide === CAROUSEL_ITEMS.length - 1
-                ? [CAROUSEL_ITEMS[0]]
+              ...carouselItems.slice(slide === 0 ? 0 : slide - 1, slide + 2),
+              ...(slide === CAROUSEL_LENGTH - 1
+                ? [carouselItems[0]]
                 : []),
             ]}
             {status === "moving-right" &&
-              CAROUSEL_ITEMS.slice(moveOption.srcIdx, moveOption.dstIdx + 1)}
+              carouselItems.slice(moveOption.srcIdx, moveOption.dstIdx + 1)}
             {status === "moving-left" &&
-              CAROUSEL_ITEMS.slice(moveOption.dstIdx, moveOption.srcIdx + 1)}
+              carouselItems.slice(moveOption.dstIdx, moveOption.srcIdx + 1)}
             {["stationary", "clicked", "clickCanceled"].includes(status) &&
-              CAROUSEL_ITEMS[slide]}
+              carouselItems[slide]}
           </div>
           <div className="carousel-control">
             <div
@@ -343,7 +369,7 @@ export const Gallery = () => {
           </div>
         </div>
         <div className="carousel-indicator">
-          {CAROUSEL_ITEMS.map((_, idx) => (
+          {carouselItems.map((_, idx) => (
             <button
               key={idx}
               className={`indicator${idx === slide ? " active" : ""}`}

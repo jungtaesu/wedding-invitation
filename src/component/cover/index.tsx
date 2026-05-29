@@ -7,6 +7,8 @@ import {
 } from "../../const"
 import { COVER_IMAGE } from "../../images"
 import { LazyDiv } from "../lazyDiv"
+import { Lightbox } from "../lightbox"
+import { useModal } from "../modal"
 
 const DAY_OF_WEEK = [
   "Sunday",
@@ -19,6 +21,8 @@ const DAY_OF_WEEK = [
 ]
 
 export const Cover = () => {
+  const { openModal, closeModal } = useModal()
+
   return (
     <LazyDiv className="card cover">
       <div className="wedding-date">
@@ -32,7 +36,26 @@ export const Cover = () => {
         {DAY_OF_WEEK[WEDDING_DATE.day()]}
       </div>
       <div className="image-wrapper">
-        <img src={COVER_IMAGE} alt="sample" loading="lazy" />
+        <button
+          className="cover-image-button"
+          onClick={() =>
+            openModal({
+              className: "cover-lightbox-modal",
+              closeOnClickBackground: true,
+              content: (
+                <Lightbox
+                  images={[COVER_IMAGE]}
+                  loop={false}
+                  showCounter={false}
+                  onRequestClose={closeModal}
+                />
+              ),
+            })
+          }
+          aria-label="Open cover image"
+        >
+          <img src={COVER_IMAGE} alt="sample" loading="lazy" />
+        </button>
       </div>
       <div className="subtitle">Save the date for the wedding of</div>
       <div className="names">

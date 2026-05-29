@@ -25,9 +25,19 @@
     overflow: hidden;
     display: flex;
     align-items: center;
+
+    .cover-image-button {
+      width: 100%;
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: zoom-in;
+    }
+
     img {
       width: 100%;
       height: auto;
+      cursor: zoom-in;
     }
   }
 
