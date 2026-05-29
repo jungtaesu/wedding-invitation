@@ -5,7 +5,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
   }
 
   .lightbox-image-wrapper {
@@ -36,29 +35,6 @@
     object-fit: contain;
     transform-origin: center center;
     will-change: transform;
-  }
-
-  .lightbox-control {
-    flex: 0 0 2.2rem;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: 999px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.06);
-
-    .arrow {
-      width: 1.6rem;
-
-      &.right {
-        transform: rotate(180deg);
-      }
-    }
-
-    &:disabled {
-      opacity: 0.35;
-    }
   }
 
   .lightbox-caption {

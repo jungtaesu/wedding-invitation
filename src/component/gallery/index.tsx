@@ -30,6 +30,7 @@ type ClickMove = "left" | "right" | null
 export const Gallery = () => {
   const { openModal, closeModal } = useModal()
   const carouselRef = useRef<HTMLDivElement>({} as HTMLDivElement)
+  const lastLightboxOpenedAtRef = useRef(0)
 
   const openLightbox = useCallback(
     (idx: number) => {
@@ -49,14 +50,34 @@ export const Gallery = () => {
     [closeModal, openModal],
   )
 
+  const tryOpenLightbox = useCallback(
+    (idx: number) => {
+      const now = Date.now()
+      // Prevent duplicate modal opens from overlapping click/touch events.
+      if (now - lastLightboxOpenedAtRef.current < 250) return
+      lastLightboxOpenedAtRef.current = now
+      openLightbox(idx)
+    },
+    [openLightbox],
+  )
+
   const carouselItems = useMemo(
     () =>
       GALLERY_IMAGES.map((item, idx) => (
         <div className="carousel-item" key={idx}>
-          <img src={item} draggable={false} alt={`${idx}`} />
+          <img
+            src={item}
+            draggable={false}
+            alt={`${idx}`}
+            onClick={() => {
+              if (statusRef.current === "stationary") {
+                tryOpenLightbox(idx)
+              }
+            }}
+          />
         </div>
       )),
-    [],
+    [tryOpenLightbox],
   )
 
   useEffect(() => {
@@ -246,14 +267,14 @@ export const Gallery = () => {
         move(slide, (slide + 1) % CAROUSEL_LENGTH)
       } else {
         setStatus("stationary")
-        openLightbox(slide)
+        tryOpenLightbox(slide)
       }
     } else if (status === "dragging") {
       dragEnd(slide, dragOptionRef.current, carouselRef.current.clientWidth)
     } else if (status === "clickCanceled") {
       setStatus("stationary")
     }
-  }, [dragEnd, move, openLightbox])
+  }, [dragEnd, move, tryOpenLightbox])
 
   useEffect(() => {
     const carouselElement = carouselRef.current

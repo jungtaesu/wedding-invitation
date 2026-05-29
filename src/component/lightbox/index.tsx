@@ -7,7 +7,6 @@ import {
   useRef,
   useState,
 } from "react"
-import ArrowLeft from "../../icons/angle-left-sm.svg?react"
 
 type LightboxImage = {
   src: string
@@ -363,8 +362,6 @@ export const Lightbox = ({
   if (normalizedImages.length === 0) return null
 
   const currentImage = normalizedImages[currentIndex]
-  const canMovePrev = loop || currentIndex > 0
-  const canMoveNext = loop || currentIndex < normalizedImages.length - 1
   const imageStyle = {
     transform: `translate3d(${offset.x}px, ${offset.y}px, 0) scale(${scale})`,
   }
@@ -372,15 +369,6 @@ export const Lightbox = ({
   return (
     <div className={`lightbox${className ? ` ${className}` : ""}`}>
       <div className="lightbox-stage">
-        <button
-          className="lightbox-control left"
-          onClick={() => move(-1)}
-          disabled={!canMovePrev}
-          aria-label="Previous image"
-        >
-          <ArrowLeft className="arrow" />
-        </button>
-
         <div
           className={`lightbox-image-wrapper${scale > 1 ? " zoomed" : ""}${isPanning ? " panning" : ""}`}
           ref={imageWrapperRef}
@@ -399,15 +387,6 @@ export const Lightbox = ({
             onLoad={onImageLoad}
           />
         </div>
-
-        <button
-          className="lightbox-control right"
-          onClick={() => move(1)}
-          disabled={!canMoveNext}
-          aria-label="Next image"
-        >
-          <ArrowLeft className="arrow right" />
-        </button>
       </div>
 
       {currentImage.caption && (
